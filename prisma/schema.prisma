@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  username String
+  image String?
+  email String? @unique
+  emailVerified DateTime?
+  hashedPassword String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sessions Session[]
+  accounts Account[]
+}
+
+model Account {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String   @db.ObjectId
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.String
+  access_token       String?  @db.String
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.String
+  session_state      String?
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String @unique
+  userId String @db.ObjectId
+  expires DateTime
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}
+
+model Quiz {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  category String
+  description String
+  questions Json[]
+  games Game[]
+}
+
+model Game {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  playersAnswered Int
+  questionNumber Int
+  quiz Quiz @relation(fields: [quizId], references: [id])
+  quizId String @db.ObjectId
+  pin Int
+  hostId String
+  gameStatus Boolean
+  player Player[]
+}
+
+model Player {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  game Game @relation(fields: [gameId], references: [id])
+  gameId String @db.ObjectId
+  nickname String
+  score Int
+  streak Int
+  rank Int
+}

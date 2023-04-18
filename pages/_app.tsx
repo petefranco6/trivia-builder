@@ -1,3 +1,4 @@
+import Navbar from '@/components/NavBar';
 import '@/styles/globals.css'
 //import { socket } from './socket';
 import type { AppProps } from 'next/app'
@@ -39,5 +40,5 @@ export default function App({ Component, pageProps }: AppProps) {
   // pageProps.socketId = socketId;
 
 
-  return <Component {...pageProps}/>
+  return (<div className='flex'><Navbar /><Component {...pageProps}/></div>)
 }

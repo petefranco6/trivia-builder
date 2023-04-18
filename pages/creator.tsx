@@ -1,8 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-
+import { useRouter } from "next/router";
 import Sidebar from "@/components/sideBar";
 import ImageInput from "@/components/ImageInput";
+import useCurrentUser from "@/hooks/useCurrentUser";
 
 interface Answer {
   isCorrect: boolean;
@@ -48,6 +49,10 @@ const creator: React.FC = () => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
+
+  const router = useRouter();
+
+  const { data: user } = useCurrentUser();
 
   const handleAddQuestion = () => {
     const newQuestion = {
@@ -102,10 +107,20 @@ const creator: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    console.log(user.id);
     try {
-      console.log({ name, category, description, questions });
-      //const response = await axios.post('/api/create', {questions });
-      //console.log(response.data);
+      const response = await axios.post("/api/create", {
+        name,
+        category,
+        description,
+        questions,
+        authorId: user.id,
+      });
+
+      if(response.status >= 200 && response.status <= 299) {
+        router.push("/");
+      }
+
     } catch (error) {
       console.error(error);
     }
@@ -113,79 +128,87 @@ const creator: React.FC = () => {
   const selectedQuestion = questions[selectedQuestionIndex];
 
   return (
-    <div className="flex gap-2">
+    <div className="w-full h-screen flex gap-1">
       <Sidebar
         questions={questions}
         onAddQuestion={handleAddQuestion}
         onSelectQuestion={handleSelectQuestion}
       />
-      <form className="w-full px-4" onSubmit={handleSubmit}>
-        <input
-          className="m-5"
-          onChange={handlePromptChange}
-          value={selectedQuestion.prompt}
-        />
-        <div>
-          <ImageInput
-            value={selectedQuestion.image}
-            onChange={handleImageChange}
-          />
-          {selectedQuestion && <img src={selectedQuestion.image} />}
-        </div>
-        <div>
-          {selectedQuestion.answers.map((answer, answerIndex) => (
-            <label key={answerIndex} className="block">
-              <input
-                type="radio"
-                name={`question-${selectedQuestionIndex}-answer`}
-                checked={selectedQuestion.correctAnswer === answerIndex}
-                onChange={() =>
-                  handleAnswerChange(selectedQuestionIndex, answerIndex)
-                }
-                className="mr-2"
-              />
-              <span className="text-gray-700 font-bold">
-                {`Answer ${answerIndex + 1}`}
-              </span>
-              <input
-                type="text"
-                value={answer.text}
-                onChange={(event) =>
-                  handleQuestionChange(selectedQuestionIndex, "answers", [
-                    ...selectedQuestion.answers.slice(0, answerIndex),
-                    { text: event.target.value },
-                    ...selectedQuestion.answers.slice(answerIndex + 1),
-                  ])
-                }
-                className="border rounded-lg border-gray-300 text-base px-4 py-2 w-full mt-2"
-              />
-            </label>
-          ))}
-        </div>
-        <div>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="name"
-          />
-          <input
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="category"
-          />
-          <input
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="description"
-          />
-        </div>
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4"
-          type="submit"
+      <div className="flex gap-1 w-full justify-center items-center">
+        <form
+          className="bg-slate-100 p-10 rounded-l shadow-2xl w-full h-full max-w-3xl pt-20 bg-gradient-to-r from-violet-500 to-fuchsia-500 flex items-center gap-3 flex-col"
+          onSubmit={handleSubmit}
         >
-          SAVE
-        </button>
-      </form>
+          <input
+            className="w-full rounded-md p-2"
+            onChange={handlePromptChange}
+            value={selectedQuestion.prompt}
+            placeholder="Prompt Here"
+          />
+          <div>
+            {!selectedQuestion.image && (
+              <ImageInput
+                value={selectedQuestion.image}
+                onChange={handleImageChange}
+              />
+            )}
+            {selectedQuestion.image && <img className="rounded-md w-full max-h-48 object-contain" src={selectedQuestion.image} />}
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {selectedQuestion.answers.map((answer, answerIndex) => (
+              <label key={answerIndex} className="block">
+                <input
+                  type="radio"
+                  name={`question-${selectedQuestionIndex}-answer`}
+                  checked={selectedQuestion.correctAnswer === answerIndex}
+                  onChange={() =>
+                    handleAnswerChange(selectedQuestionIndex, answerIndex)
+                  }
+                  className="mr-2"
+                />
+                <span className="text-gray-700 font-bold">
+                  {`Answer ${answerIndex + 1}`}
+                </span>
+                <input
+                  type="text"
+                  value={answer.text}
+                  onChange={(event) =>
+                    handleQuestionChange(selectedQuestionIndex, "answers", [
+                      ...selectedQuestion.answers.slice(0, answerIndex),
+                      { text: event.target.value },
+                      ...selectedQuestion.answers.slice(answerIndex + 1),
+                    ])
+                  }
+                  className="border rounded-lg border-gray-300 text-base px-4 py-2 w-full mt-2"
+                />
+              </label>
+            ))}
+          </div>
+          <div className="gap-2 flex">
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="name"
+            />
+            <input
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="category"
+            />
+            <input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="description"
+            />
+          </div>
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md w-1/2"
+            type="submit"
+          >
+            SAVE
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

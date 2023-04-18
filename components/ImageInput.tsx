@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
 interface Props {
   value: string;
@@ -26,25 +26,20 @@ const ImageInput: React.FC<Props> = ({ value, onChange }) => {
   };
 
   return (
-    <div>
-      <label htmlFor="image">Image</label>
-      <div className="flex items-center mt-2">
-        <button
-          type="button"
-          onClick={handleClick}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md mr-4"
-        >
-          Choose File
-        </button>
-        <span>{value ? value.substring(0, 30) + '...' : 'No file chosen'}</span>
-        <input
-          ref={inputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="hidden"
-        />
+    <div className="w-full">
+      <div
+        onClick={handleClick}
+        className="bg-slate-200 rounded-md w-full h-48 flex items-center justify-center opacity-60"
+      >
+        <div>Choose Image</div>
       </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+      />
     </div>
   );
 };

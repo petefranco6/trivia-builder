@@ -3,9 +3,9 @@ import fetcher from '@/lib/fetcher';
 
 const useQuizList = () => {
   const { data, error, isLoading } = useSwr('/api/quizzes', fetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
+    revalidateIfStale: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true,
   });
   return {
     data,

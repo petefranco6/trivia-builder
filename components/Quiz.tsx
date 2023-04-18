@@ -1,25 +1,7 @@
 import { isEmpty } from "lodash";
 import { useState } from "react";
 import Link from "next/link";
-
-export interface quiz {
-  category: string;
-  description: string;
-  id: string;
-  name: string;
-  questions: question[];
-}
-
-export interface question {
-  answers: answer[];
-  image: string;
-  prompt: string;
-}
-
-export interface answer {
-  text: string;
-  isCorrect: boolean;
-}
+import { quiz, question, answer } from "@/models/quiz";
 
 export interface userAnswer {
   questionIndex: number;
@@ -68,11 +50,13 @@ const Quiz: React.FC<Quiz> = ({ data }) => {
   }
 
   return (
-    <div>
+    <div className="bg-slate-100 p-12 rounded-l shadow-2xl w-full max-w-xl">
       {questionIndex < data.questions.length && (
-        <form onSubmit={submitAnswer}>
+        <form onSubmit={submitAnswer} className="flex gap-2 flex-col">
+          <p className="text-xl">
           {data.questions[questionIndex].prompt}
-          <img className="w-10" src={data.questions[questionIndex].image} />
+          </p>
+          <img className="h-20 w-full object-contain" src={data.questions[questionIndex].image} />
           {data.questions[questionIndex].answers.map((a, ii) => (
             <div key={"q" + questionIndex + "a" + ii}>
               <input
@@ -85,16 +69,13 @@ const Quiz: React.FC<Quiz> = ({ data }) => {
               <br></br>
             </div>
           ))}
-          <button disabled={!selectedAnswer} type="submit">
+          <button className="bg-gray-400" disabled={!selectedAnswer} type="submit">
             Submit
           </button>
         </form>
       )}
       {questionIndex >= data.questions.length && (
         <div>
-          <Link href={"/"} className="bg-blue-600 py-3 text-white rounded-md mt-10 hover:bg-blue-700 transition ">Home</Link>
-          <br></br>
-          <br></br>
           <div>All Done!</div>
           <div>
             Results: {getTotalCorrectAnswers()}/{getTotalAnswers()}

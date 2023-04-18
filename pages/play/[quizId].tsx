@@ -9,7 +9,7 @@ export default function PlayQuizHome() {
     const { data: quiz } = useGetQuiz(quizIdTemp);
 
     return(
-        <div className="text-white">
+        <div className="flex w-full h-screen justify-center items-center bg-gradient-to-r from-violet-500 to-fuchsia-500">
             <Quiz data={quiz}></Quiz>
         </div>
     )

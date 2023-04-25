@@ -29,7 +29,7 @@ const initialQuestions: question[] = [
   },
 ];
 
-const creator: React.FC = () => {
+const Creator: React.FC = () => {
   const [questions, setQuestions] = useState(initialQuestions);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
 
@@ -199,4 +199,4 @@ const creator: React.FC = () => {
   );
 };
 
-export default creator;
+export default Creator;

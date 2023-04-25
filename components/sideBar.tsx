@@ -1,8 +1,8 @@
 import React from "react";
-import { Question } from "@/pages/creator";
+import { question } from "@/models/quiz";
 
 interface SidebarProps {
-  questions: Question[];
+  questions: question[];
   onAddQuestion: () => void;
   onSelectQuestion: (questionIndex: number) => void;
 }

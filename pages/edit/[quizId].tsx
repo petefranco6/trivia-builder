@@ -117,7 +117,7 @@ export default function EditQuizHome() {
   };
 
   return (
-    <div>
+    <div className="w-full h-screen flex gap-1">
       <EditQuiz
         data={quizData}
         questionAdded={questionAdded}

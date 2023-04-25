@@ -4,20 +4,9 @@ import { useRouter } from "next/router";
 import Sidebar from "@/components/sideBar";
 import ImageInput from "@/components/ImageInput";
 import useCurrentUser from "@/hooks/useCurrentUser";
+import { question } from "@/models/quiz";
 
-interface Answer {
-  isCorrect: boolean;
-  text: string;
-}
-
-export interface Question {
-  prompt: string;
-  answers: Answer[];
-  image: string;
-  correctAnswer: number;
-}
-
-const initialQuestions: Question[] = [
+const initialQuestions: question[] = [
   {
     prompt: "What is the capital of France?",
     answers: [
@@ -27,7 +16,6 @@ const initialQuestions: Question[] = [
       { isCorrect: false, text: "Madrid" },
     ],
     image: "",
-    correctAnswer: 1,
   },
   {
     prompt: "What is the largest country in the world by area?",
@@ -38,7 +26,6 @@ const initialQuestions: Question[] = [
       { isCorrect: false, text: "canada" },
     ],
     image: "",
-    correctAnswer: 0,
   },
 ];
 
@@ -160,7 +147,6 @@ const creator: React.FC = () => {
                 <input
                   type="radio"
                   name={`question-${selectedQuestionIndex}-answer`}
-                  checked={selectedQuestion.correctAnswer === answerIndex}
                   onChange={() =>
                     handleAnswerChange(selectedQuestionIndex, answerIndex)
                   }

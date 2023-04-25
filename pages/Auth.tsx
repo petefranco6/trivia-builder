@@ -4,9 +4,8 @@ import { useCallback, useState } from "react";
 import {FaGoogle, FaGithub} from "react-icons/fa";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
-const auth = () => {
+const Auth = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -120,4 +119,4 @@ const auth = () => {
   );
 };
 
-export default auth;
+export default Auth;

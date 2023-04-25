@@ -10,7 +10,6 @@ export interface question {
   answers: answer[];
   image: string;
   prompt: string;
-  description: string;
 }
 
 export interface answer {

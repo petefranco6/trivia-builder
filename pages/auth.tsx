@@ -49,8 +49,8 @@ const Auth = () => {
   }, [email, username, password, login]);
 
   return (
-    <div className="relative h-full w-full bg-[url('/images/bg.jpg')] bg-no-repeat bg-center bg-fixed bg-cover">
-      <div className="bg-black w-full h-full lg:bg-opacity-50">
+    <div className="relative h-screen w-full bg-gradient-to-b from-violet-500 to-fuchsia-500 bg-fixed bg-cover">
+      <div className="bg-black w-full h-full lg:bg-opacity-50 py-20">
         <div className="flex justify-center">
           <div className="bg-black bg-opacity-70 px-16 py-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-md w-full">
             <h2 className="text-white text-4xl mb-8 font-semibold">
@@ -89,7 +89,7 @@ const Auth = () => {
             </div>
             <button
               onClick={variant === "login" ? login : register}
-              className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition "
+              className="bg-violet-900 py-3 text-white rounded-md w-full mt-10 hover:bg-violet-700 transition "
             >
               {variant === "login" ? "Login" : "Sign up"}
             </button>

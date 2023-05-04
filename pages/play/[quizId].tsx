@@ -1,7 +1,25 @@
 import { useRouter } from 'next/router'
 import useGetQuiz from "@/hooks/useGetQuiz";
-import React, { useState, useEffect  } from 'react';
+import React from 'react';
 import Quiz from "@/components/Quiz";
+import { NextPageContext } from "next";
+import { getSession } from "next-auth/react";
+
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth",
+        permanant: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}
 
 export default function PlayQuizHome() {
     const router = useRouter()

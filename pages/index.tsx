@@ -1,12 +1,8 @@
-import Link from "next/link";
-import { getSession, signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { NextPageContext } from "next";
 import useCurrentUser from "@/hooks/useCurrentUser";
 import QuizList from "@/components/QuizList";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { PlusCircleIcon } from "@heroicons/react/24/solid";
-//import { socket } from "./socket";
+
 import useQuizList from "@/hooks/useQuizList";
 import NavBar from "@/components/NavBar";
 
